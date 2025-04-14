@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: API-GATEWAY
+  config:
+    import: optional:configserver:http://localhost:8889
   cloud:
     gateway:
       routes:
@@ -11,12 +13,3 @@ spring:
           uri: lb://LOGIN
           predicates:
             - Path=/login/**
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8762/eureka
