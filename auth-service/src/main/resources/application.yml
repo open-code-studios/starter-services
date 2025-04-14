@@ -1,0 +1,45 @@
+spring:
+  messages:
+    basename: messages/errors/errors
+    encoding: UTF-8
+    fallback-to-system-locale: true
+  web:
+    locale-resolver: accept_header
+  application:
+    name: LOGIN
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Never use 'update' or 'create' in production
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+server:
+  port: 8888
+  servlet:
+    context-path: /login
+application:
+  security:
+    jwt:
+      secret-key: 7WE845YN358TY58VG59O4YUNT849WYT9O85Y6N859YTN889WO456YN98WV4N5Y9Q
+      expiration: 900000 #  15 min in ms
+      cookie-name: jwt-cookie
+      refresh-token:
+        expiration: 1296000000 # 15 days in ms
+        cookie-name: refresh-jwt-cookie
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka
