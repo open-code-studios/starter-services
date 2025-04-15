@@ -1,12 +1,14 @@
 spring:
+  application:
+    name: LOGIN
   messages:
     basename: messages/errors/errors
     encoding: UTF-8
     fallback-to-system-locale: true
   web:
     locale-resolver: accept_header
-  application:
-    name: LOGIN
+  config:
+    import: optional:configserver:http://localhost:8889
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
@@ -16,9 +18,6 @@ spring:
     hibernate:
       ddl-auto: validate  # Never use 'update' or 'create' in production
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
@@ -38,8 +37,3 @@ application:
       refresh-token:
         expiration: 1296000000 # 15 days in ms
         cookie-name: refresh-jwt-cookie
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8762/eureka
