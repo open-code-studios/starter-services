@@ -22,17 +22,23 @@ public class JwtServiceImpl implements JwtService {
     private String secretKey;
 
     public String generateToken(UserDetails userDetails) {
+        String role = userDetails.getAuthorities().iterator().next().getAuthority();
         return Jwts.builder().setSubject(userDetails.getUsername())
+                .claim("role", role)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSigninKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public String generateRefreshToken(Map<String, String> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        String role = userDetails.getAuthorities().iterator().next().getAuthority();
+        return Jwts.builder().setSubject(userDetails.getUsername())
+                .claim("role", role)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 7))
-                .signWith(getSigninKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     private Key getSigninKey() {

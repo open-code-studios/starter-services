@@ -1,5 +1,6 @@
 package com.ocs.login.dto;
 
+import com.ocs.login.entity.Role;
 import com.ocs.login.validation.unique_email.UniqueEmail;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -23,4 +24,6 @@ public class SignUpRequest {
     @Size(min = 8, max = 100, message = "{password.size}")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "{password.pattern}")
     private String password;
+
+    private Role role;
 }

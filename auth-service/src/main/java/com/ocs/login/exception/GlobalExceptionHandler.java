@@ -1,6 +1,7 @@
 package com.ocs.login.exception;
 
 import com.ocs.login.dto.ErrorResponse;
+import com.ocs.login.exception.auth.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -50,13 +51,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(UnauthorizedException ex, WebRequest request) {
+        ErrorResponse errorResponse = ErrorResponse.createFromApiException(ex, messageSource, request);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
         Locale locale = LocaleContextHolder.getLocale();
         String message = messageSource.getMessage("error.generic", null, "An unexpected error occurred", locale);
-
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", "INTERNAL_ERROR", message, request.getDescription(false).replace("uri=", ""));
-
+        ex.printStackTrace();
         return ResponseEntity.internalServerError().body(errorResponse);
     }
 }

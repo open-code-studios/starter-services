@@ -1,6 +1,8 @@
 package com.ocs.login.entity;
 
 public enum Role {
-    USER,
-    ADMIN
+    SUPER_ADMIN,
+    ADMIN,
+    CO_ADMIN,
+    USER
 }
